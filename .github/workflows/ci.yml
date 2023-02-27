@@ -10,6 +10,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16.1.0'
+      - run: git submodule init
+      - run: git submodule update
       - run: npm install
       - run: npm run build
       - uses: peaceiris/actions-gh-pages@v2
