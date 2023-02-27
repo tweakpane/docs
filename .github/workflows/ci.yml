@@ -1,10 +1,7 @@
 name: CI
 on:
+  push:
   workflow_dispatch:
-    inputs:
-      deploy:
-        required: false
-        type: boolean
 jobs:
   deploy:
     runs-on: ubuntu-latest
