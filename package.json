@@ -4,6 +4,9 @@
   "description": "Document hub for Tweakpane",
   "scripts": {
     "build": "run-s v3 v4",
+    "v2": "run-s v2:build v2:deploy",
+    "v2:build": "cd v2 && npm install && npm run build",
+    "v2:deploy": "cpx 'v2/docs/**/*' public/v2",
     "v3": "run-s v3:build v3:deploy",
     "v3:build": "cd v3 && npm install && npm run setup",
     "v3:deploy": "cpx 'v3/packages/tweakpane/docs/**/*' public/v3",
