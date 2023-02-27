@@ -1,0 +1,20 @@
+{
+  "name": "tweakpane-docs",
+  "version": "0.0.0",
+  "description": "Document hub for Tweakpane",
+  "scripts": {
+    "build": "run-s v3 v4",
+    "v3": "run-s v3:build v3:deploy",
+    "v3:build": "cd v3 && npm install && npm run setup",
+    "v3:deploy": "cpx 'v3/packages/tweakpane/docs/**/*' public/v3",
+    "v4": "run-s v4:build v4:deploy",
+    "v4:build": "cd v4 && npm install && npm run setup",
+    "v4:deploy": "cpx 'v4/packages/tweakpane/docs/**/*' public"
+  },
+  "author": "cocopon",
+  "license": "MIT",
+  "dependencies": {
+    "cpx": "^1.5.0",
+    "npm-run-all": "^4.1.5"
+  }
+}

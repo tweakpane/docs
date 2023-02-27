@@ -1,0 +1,6 @@
+[submodule "v3"]
+	path = v3
+	url = https://github.com/cocopon/tweakpane.git
+[submodule "v4"]
+	path = v4
+	url = https://github.com/cocopon/tweakpane.git
