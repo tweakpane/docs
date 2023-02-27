@@ -4,6 +4,8 @@
   "description": "Document hub for Tweakpane",
   "scripts": {
     "build": "run-s v3 v4",
+    "server": "http-server -c-1 ./public",
+    "start": "run-s build server",
     "v2": "run-s v2:build v2:deploy",
     "v2:build": "cd v2 && npm install && npm run build",
     "v2:deploy": "cpx 'v2/docs/**/*' public/v2",
@@ -18,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "cpx": "^1.5.0",
+    "http-server": "^14.1.1",
     "npm-run-all": "^4.1.5"
   }
 }
