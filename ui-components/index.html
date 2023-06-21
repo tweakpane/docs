@@ -44,7 +44,7 @@
 		<a class="logo" href="../">
 			<div class="logo_symbol"></div>
 			Tweakpane
-			<div class="logo_version">3.1.4</div>
+			<div class="logo_version">4.0.0-beta.1</div>
 		</a>
 	</div>
 	<ul class="menu_list">
@@ -206,7 +206,7 @@
 				</div>
 				<div class="main_inner">
 					
-<h2 id="folder">Folder</h2>
+<h2 id="folder"><a href="#folder">Folder</a></h2>
 <p>Use <code>addFolder()</code> to add folders. You can add all types of components to the returned folder just like adding them to the pane.</p>
 
 <div class="main_media">
@@ -232,7 +232,7 @@ f2.addBinding(PARAMS, 'randomness');</code></pre></div>
 	</div>
 </div>
 
-<h3 id="pane_title">Pane title</h3>
+<h3 id="pane_title"><a href="#pane_title">Pane title</a></h3>
 <p><code>title</code> option of the pane creates a root title. It can expand/collapse the whole pane.</p>
 
 <div class="main_media">
@@ -252,7 +252,7 @@ f2.addBinding(PARAMS, 'randomness');</code></pre></div>
 </div>
 
 
-<h2 id="button">Button</h2>
+<h2 id="button"><a href="#button">Button</a></h2>
 <p><code>addButton()</code> adds a button component. Use <code>on()</code> to handle click events.</p>
 
 <div class="main_media">
@@ -280,7 +280,7 @@ btn.<strong>on</strong>('click', () =&gt; {
 </div>
 
 
-<h2 id="tab">Tab</h2>
+<h2 id="tab"><a href="#tab">Tab</a></h2>
 <p><code>addTab()</code> adds a tab component. You can access an each page by <code>pages[]</code> and add components into it.</p>
 
 <div class="main_media">
@@ -318,9 +318,25 @@ tab.<strong>pages[0]</strong>.addBinding(...);
 			</div>
 		</div>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-	<script src="../assets/tweakpane.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10/build/highlight.min.js" defer></script>
+	<script src="../assets/tweakpane.js" type="module" defer></script>
+	<script type="module">
+		window.DocModules = [
+			async () => {
+				const m = await import('../assets/tweakpane.js');
+				window.Tweakpane = m;
+			},
+		];
+	</script>
 	
-	<script src="../assets/bundle.js" defer></script>
+	<script type="module">
+		// Load Tweakpane module and make it global variable
+		await Promise.all(window.DocModules.map((f) => f()));
+
+		// Load document script	
+		const scriptElem = document.createElement('script');
+		scriptElem.src = '../assets/bundle.js';
+		document.body.appendChild(scriptElem);
+	</script>
 </body>
 </html>

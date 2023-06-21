@@ -44,7 +44,7 @@
 		<a class="logo" href="../">
 			<div class="logo_symbol"></div>
 			Tweakpane
-			<div class="logo_version">3.1.4</div>
+			<div class="logo_version">4.0.0-beta.1</div>
 		</a>
 	</div>
 	<ul class="menu_list">
@@ -223,7 +223,7 @@ pane.addBinding(PARAMS, 'wave', {
 </div>
 
 
-<h2 id="multiline">Multiline</h2>
+<h2 id="multiline"><a href="#multiline">Multiline</a></h2>
 <p><code>multiline</code> option provides a multiline log component. <code>rows</code> can change the display height.</p>
 
 <div class="main_media">
@@ -243,7 +243,7 @@ pane.addBinding(PARAMS, 'wave', {
 </div>
 
 
-<h2 id="buffersize">Buffer size</h2>
+<h2 id="buffersize"><a href="#buffersize">Buffer size</a></h2>
 <p>You can use <code>bufferSize</code> option to change the buffer size.</p>
 
 <div class="main_media">
@@ -262,7 +262,7 @@ pane.addBinding(PARAMS, 'wave', {
 </div>
 
 
-<h2 id="interval">Interval</h2>
+<h2 id="interval"><a href="#interval">Interval</a></h2>
 <p>To change an interval of monitors, set <code>interval</code> option in milliseconds. The default value is 200(ms).</p>
 
 <div class="main_media">
@@ -281,7 +281,7 @@ pane.addBinding(PARAMS, 'time', {
 </div>
 
 
-<h2 id="graph">Graph</h2>
+<h2 id="graph"><a href="#graph">Graph</a></h2>
 <p><code>{view: 'graph'}</code> option for number parameters provides a graph component. Pass <code>min</code> and <code>max</code> for value range.</p>
 
 <div class="main_media">
@@ -315,9 +315,25 @@ pane.addBinding(PARAMS, 'wave', {
 			</div>
 		</div>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-	<script src="../assets/tweakpane.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10/build/highlight.min.js" defer></script>
+	<script src="../assets/tweakpane.js" type="module" defer></script>
+	<script type="module">
+		window.DocModules = [
+			async () => {
+				const m = await import('../assets/tweakpane.js');
+				window.Tweakpane = m;
+			},
+		];
+	</script>
 	
-	<script src="../assets/bundle.js" defer></script>
+	<script type="module">
+		// Load Tweakpane module and make it global variable
+		await Promise.all(window.DocModules.map((f) => f()));
+
+		// Load document script	
+		const scriptElem = document.createElement('script');
+		scriptElem.src = '../assets/bundle.js';
+		document.body.appendChild(scriptElem);
+	</script>
 </body>
 </html>

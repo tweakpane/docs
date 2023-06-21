@@ -44,7 +44,7 @@
 		<a class="logo" href="../../">
 			<div class="logo_symbol"></div>
 			Tweakpane
-			<div class="logo_version">3.1.4</div>
+			<div class="logo_version">4.0.0-beta.1</div>
 		</a>
 	</div>
 	<ul class="menu_list">
@@ -202,7 +202,7 @@
 				</div>
 				<div class="main_inner">
 					
-<h2 id="datgui">dat.GUI</h2>
+<h2 id="datgui"><a href="#datgui">dat.GUI</a></h2>
 <p>
 	<a href="https://github.com/dataarts/dat.gui" target="_blank" rel="noreferrer">dat.GUI</a> is the most famous library for tuning parameter values, but regrettably it seems to be inactive at the moment.
 </p>
@@ -567,11 +567,27 @@ containerElem.appendChild(gui.<strong>domElement</strong>);</code></pre></div>
 			</div>
 		</div>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-	<script src="../../assets/tweakpane.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10/build/highlight.min.js" defer></script>
+	<script src="../../assets/tweakpane.js" type="module" defer></script>
+	<script type="module">
+		window.DocModules = [
+			async () => {
+				const m = await import('../../assets/tweakpane.js');
+				window.Tweakpane = m;
+			},
+		];
+	</script>
 	
 <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js" defer></script>
 
-	<script src="../../assets/bundle.js" defer></script>
+	<script type="module">
+		// Load Tweakpane module and make it global variable
+		await Promise.all(window.DocModules.map((f) => f()));
+
+		// Load document script	
+		const scriptElem = document.createElement('script');
+		scriptElem.src = '../../assets/bundle.js';
+		document.body.appendChild(scriptElem);
+	</script>
 </body>
 </html>

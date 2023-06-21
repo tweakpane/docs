@@ -44,7 +44,7 @@
 		<a class="logo" href="../">
 			<div class="logo_symbol"></div>
 			Tweakpane
-			<div class="logo_version">3.1.4</div>
+			<div class="logo_version">4.0.0-beta.1</div>
 		</a>
 	</div>
 	<ul class="menu_list">
@@ -211,7 +211,10 @@
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="html">&lt;script src=&quot;<strong>https://cdn.jsdelivr.net/npm/tweakpane@3.1.4/dist/tweakpane.min.js</strong>&quot;&gt;&lt;/script&gt;</code></pre>
+				<pre><code class="html">&lt;script type=&quot;<strong>module</strong>&quot;&gt;
+  import {Pane} from '<strong>https://cdn.jsdelivr.net/npm/tweakpane@4.0.0-beta.1/dist/tweakpane.min.js</strong>';
+  // ...
+&lt;/script&gt;</code></pre>
 			</div>
 		</div>
 		<div class="demo_chip">.html</div>
@@ -224,7 +227,10 @@
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="html">&lt;script src=&quot;path/to/tweakpane-3.1.4.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+				<pre><code class="html">&lt;script type=&quot;<strong>module</strong>&quot;&gt;
+  import {Pane} from './path/to/tweakpane-4.0.0-beta.1.min.js';
+  // ...
+&lt;/script&gt;</code></pre>
 			</div>
 		</div>
 		<div class="demo_chip">.html</div>
@@ -250,7 +256,8 @@ $ npm install --save-dev @tweakpane/core</code></pre>
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="js">import {Pane} from 'tweakpane';</code></pre>
+				<pre><code class="js">import {Pane} from 'tweakpane';
+// ...</code></pre>
 			</div>
 		</div>
 		<div class="demo_chip">.js</div>
@@ -259,17 +266,13 @@ $ npm install --save-dev @tweakpane/core</code></pre>
 
 
 <h2>2. Create a pane</h2>
-<p>Create an instance of a pane by <code>new</code>.</p>
+<p>Create an instance of a pane by <code>new Pane()</code>.</p>
 
 <div class="main_media">
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="js">// CDN
-const pane = new Tweakpane.Pane();
-
-// npm
-const pane = new Pane();</code></pre>
+				<pre><code class="js">const pane = new Pane();</code></pre>
 			</div>
 		</div>
 		<div class="demo_result">
@@ -325,9 +328,25 @@ const pane = new Pane();</code></pre>
 			</div>
 		</div>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-	<script src="../assets/tweakpane.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10/build/highlight.min.js" defer></script>
+	<script src="../assets/tweakpane.js" type="module" defer></script>
+	<script type="module">
+		window.DocModules = [
+			async () => {
+				const m = await import('../assets/tweakpane.js');
+				window.Tweakpane = m;
+			},
+		];
+	</script>
 	
-	<script src="../assets/bundle.js" defer></script>
+	<script type="module">
+		// Load Tweakpane module and make it global variable
+		await Promise.all(window.DocModules.map((f) => f()));
+
+		// Load document script	
+		const scriptElem = document.createElement('script');
+		scriptElem.src = '../assets/bundle.js';
+		document.body.appendChild(scriptElem);
+	</script>
 </body>
 </html>
