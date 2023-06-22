@@ -152,7 +152,7 @@
 					<a class="submenuItem_anchor" href="../misc/#events">Events</a>
 				</li>
 				<li class="submenuItem">
-					<a class="submenuItem_anchor" href="../misc/#imex">Import/Export</a>
+					<a class="submenuItem_anchor" href="../misc/#state">Import/Export</a>
 				</li>
 				<li class="submenuItem">
 					<a class="submenuItem_anchor" href="../misc/#tips">Tips</a>
@@ -343,11 +343,11 @@ pane.addBinding(PARAMS, 'fnum', {
 <script type="module">
 	window.DocModules.push(
 		async () => {
-			const m = await import('https://esm.run/@tweakpane/plugin-essentials@0.2.0-alpha.0');
+			const m = await import('https://esm.run/@tweakpane/plugin-essentials@0.2.0-beta.0');
 			window.TweakpaneEssentialsPlugin = m;
 		},
 		async () => {
-			const m = await import('https://esm.run/@tweakpane/plugin-camerakit@0.3.0-alpha.0');
+			const m = await import('https://esm.run/@tweakpane/plugin-camerakit@0.3.0-beta.0');
 			window.TweakpaneCamerakitPlugin = m;
 		},
 	);
