@@ -44,7 +44,7 @@
 		<a class="logo" href="../">
 			<div class="logo_symbol"></div>
 			Tweakpane
-			<div class="logo_version">4.0.0-beta.1</div>
+			<div class="logo_version">4.0.0-beta.2</div>
 		</a>
 	</div>
 	<ul class="menu_list">
@@ -144,6 +144,13 @@
 			<a class="menuItem_anchor" href="../plugins/">Plugins</a>
 		</li>
 		<li class="menuItem">
+			<ul class="submenu">
+				<li class="submenuItem">
+					<a class="submenuItem_anchor" href="../plugins/dev/">Plugin development</a>
+				</li>
+			</ul>
+		</li>
+		<li class="menuItem">
 			<a class="menuItem_anchor" href="../misc/">Misc</a>
 		</li>
 		<li class="menuItem">
@@ -196,7 +203,7 @@
 	<div class="pageHeader_inner">
 		<div class="pageHeader_text">
 			<h1 class="pageHeader_title">Plugins</h1>
-			<p>Expand Tweakpane world.</p>
+			<p>Expand the Tweakpane world.</p>
 		</div>
 	</div>
 </div>
@@ -295,25 +302,24 @@ pane.addBinding(PARAMS, 'fnum', {
 <p><a href="https://github.com/topics/tweakpane" target="_blank">#tweakpane</a> topic on GitHub may be useful to search 3rd party plugins.</p>
 
 
-<h2 id="create">Create your own plugin</h2>
-<p>From version 2.0.0, you can provide custom components with the plugin system.</p>
-
-<div class="main_media">
-	<div class="demo">
-		<div class="demo_code">
-			<div class="codeBlock">
-				<pre><code class="js">pane.registerPlugin({
-  plugin: {
-    ...
-  },
-});</code></pre>
+<h2>What's next</h2>
+<div class="rel">
+	<div class="relItem">
+		<a class="relItem_anchor" href="../plugins/dev/">
+			<div class="relItem_text">
+				<div class="relItem_title">
+					Plugin development
+				</div>
+				<div class="relItem_detail">
+					create your own plugin
+				</div>
 			</div>
-		</div>
-		<div class="demo_chip">.js</div>
+			<div class="relItem_icon relItem_icon-circle">
+				<span class="material-icons">arrow_forward</span>
+			</div>
+		</a>
 	</div>
 </div>
-
-<p>See the <a href="https://github.com/tweakpane/plugin-template" target="_blank">template repository</a> for details.</p>
 
 				</div>
 				<div class="main_globalFooter">
@@ -352,7 +358,6 @@ pane.addBinding(PARAMS, 'fnum', {
 		},
 	);
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@tweakpane/plugin-camerakit@0.2.0/dist/tweakpane-plugin-camerakit.min.js"></script>
 
 	<script type="module">
 		// Load Tweakpane module and make it global variable

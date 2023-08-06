@@ -1,4 +1,4 @@
-/*! Tweakpane 4.0.0-beta.1 (c) 2016 cocopon, licensed under the MIT license. */
+/*! Tweakpane 4.0.0-beta.2 (c) 2016 cocopon, licensed under the MIT license. */
 function forceCast(v) {
     return v;
 }
@@ -1596,12 +1596,15 @@ class Semver {
     }
 }
 
-const VERSION$1 = new Semver('2.0.0-beta.1');
+const VERSION$1 = new Semver('2.0.0-beta.2');
 
-const ButtonBladePlugin = {
+function createPlugin(plugin) {
+    return Object.assign({ core: VERSION$1 }, plugin);
+}
+
+const ButtonBladePlugin = createPlugin({
     id: 'button',
     type: 'blade',
-    core: VERSION$1,
     accept(params) {
         const result = parseRecord(params, (p) => ({
             title: p.required.string,
@@ -1628,7 +1631,7 @@ const ButtonBladePlugin = {
         }
         return null;
     },
-};
+});
 
 function addButtonAsBlade(api, params) {
     return api.addBlade(Object.assign(Object.assign({}, params), { view: 'button' }));
@@ -2302,10 +2305,9 @@ class FolderController extends ContainerBladeController {
     }
 }
 
-const FolderBladePlugin = {
+const FolderBladePlugin = createPlugin({
     id: 'folder',
     type: 'blade',
-    core: VERSION$1,
     accept(params) {
         const result = parseRecord(params, (p) => ({
             title: p.required.string,
@@ -2330,7 +2332,7 @@ const FolderBladePlugin = {
         }
         return new FolderApi(args.controller, args.pool);
     },
-};
+});
 
 const cn$o = ClassName('');
 function valueToModifier(elem, modifier) {
@@ -2737,10 +2739,9 @@ class TabController extends ContainerBladeController {
     }
 }
 
-const TabBladePlugin = {
+const TabBladePlugin = createPlugin({
     id: 'tab',
     type: 'blade',
-    core: VERSION$1,
     accept(params) {
         const result = parseRecord(params, (p) => ({
             pages: p.required.array(p.required.object({ title: p.required.string })),
@@ -2781,7 +2782,7 @@ const TabBladePlugin = {
         }
         return null;
     },
-};
+});
 
 function createBladeController(plugin, args) {
     const ac = plugin.accept(args.params);
@@ -3792,10 +3793,9 @@ function createConstraint$6(params) {
     }
     return new CompositeConstraint(constraints);
 }
-const BooleanInputPlugin = {
+const BooleanInputPlugin = createPlugin({
     id: 'input-bool',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'boolean') {
             return null;
@@ -3844,7 +3844,7 @@ const BooleanInputPlugin = {
         }
         return null;
     },
-};
+});
 
 const cn$d = ClassName('col');
 class ColorView {
@@ -5592,10 +5592,9 @@ function isForColor(params) {
     }
     return false;
 }
-const NumberColorInputPlugin = {
+const NumberColorInputPlugin = createPlugin({
     id: 'input-color-number',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'number') {
             return null;
@@ -5635,7 +5634,7 @@ const NumberColorInputPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
 function colorFromObject(value, type) {
     if (!isColorObject(value)) {
@@ -5669,10 +5668,9 @@ function createColorObjectFormatter(supportsAlpha, type) {
         return colorToObjectRgbString(value, type);
     };
 }
-const ObjectColorInputPlugin = {
+const ObjectColorInputPlugin = createPlugin({
     id: 'input-color-object',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         var _a;
         if (!isColorObject(value)) {
@@ -5705,12 +5703,11 @@ const ObjectColorInputPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
-const StringColorInputPlugin = {
+const StringColorInputPlugin = createPlugin({
     id: 'input-color-string',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'string') {
             return null;
@@ -5758,7 +5755,7 @@ const StringColorInputPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
 class PointNdConstraint {
     constructor(config) {
@@ -5856,10 +5853,9 @@ function createConstraint$4(params, initialValue) {
     }
     return new CompositeConstraint(constraints);
 }
-const NumberInputPlugin = {
+const NumberInputPlugin = createPlugin({
     id: 'input-number',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'number') {
             return null;
@@ -5914,7 +5910,7 @@ const NumberInputPlugin = {
         }
         return null;
     },
-};
+});
 
 class Point2d {
     constructor(x = 0, y = 0) {
@@ -6293,10 +6289,9 @@ function shouldInvertY(params) {
     }
     return 'inverted' in yParams ? !!yParams.inverted : false;
 }
-const Point2dInputPlugin = {
+const Point2dInputPlugin = createPlugin({
     id: 'input-point2d',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (!Point2d.isObject(value)) {
             return null;
@@ -6339,7 +6334,7 @@ const Point2dInputPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
 class Point3d {
     constructor(x = 0, y = 0, z = 0) {
@@ -6401,10 +6396,9 @@ function createConstraint$2(params, initialValue) {
         ],
     });
 }
-const Point3dInputPlugin = {
+const Point3dInputPlugin = createPlugin({
     id: 'input-point3d',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (!Point3d.isObject(value)) {
             return null;
@@ -6442,7 +6436,7 @@ const Point3dInputPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
 class Point4d {
     constructor(x = 0, y = 0, z = 0, w = 0) {
@@ -6510,10 +6504,9 @@ function createConstraint$1(params, initialValue) {
         ],
     });
 }
-const Point4dInputPlugin = {
+const Point4dInputPlugin = createPlugin({
     id: 'input-point4d',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (!Point4d.isObject(value)) {
             return null;
@@ -6556,7 +6549,7 @@ const Point4dInputPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
 function createConstraint(params) {
     const constraints = [];
@@ -6566,10 +6559,9 @@ function createConstraint(params) {
     }
     return new CompositeConstraint(constraints);
 }
-const StringInputPlugin = {
+const StringInputPlugin = createPlugin({
     id: 'input-string',
     type: 'input',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'string') {
             return null;
@@ -6622,7 +6614,7 @@ const StringInputPlugin = {
         }
         return null;
     },
-};
+});
 
 const Constants = {
     monitor: {
@@ -6724,10 +6716,9 @@ class SingleLogController {
     }
 }
 
-const BooleanMonitorPlugin = {
+const BooleanMonitorPlugin = createPlugin({
     id: 'monitor-bool',
     type: 'monitor',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'boolean') {
             return null;
@@ -6762,7 +6753,7 @@ const BooleanMonitorPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
 class GraphLogMonitorBindingApi extends BindingApi {
     get max() {
@@ -6953,10 +6944,9 @@ function createGraphMonitor(args) {
 function shouldShowGraph(params) {
     return params.view === 'graph';
 }
-const NumberMonitorPlugin = {
+const NumberMonitorPlugin = createPlugin({
     id: 'monitor-number',
     type: 'monitor',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'number') {
             return null;
@@ -6992,12 +6982,11 @@ const NumberMonitorPlugin = {
         }
         return null;
     },
-};
+});
 
-const StringMonitorPlugin = {
+const StringMonitorPlugin = createPlugin({
     id: 'monitor-string',
     type: 'monitor',
-    core: VERSION$1,
     accept: (value, params) => {
         if (typeof value !== 'string') {
             return null;
@@ -7035,7 +7024,7 @@ const StringMonitorPlugin = {
             viewProps: args.viewProps,
         });
     },
-};
+});
 
 class BladeApiCache {
     constructor() {
@@ -7797,6 +7786,6 @@ class Pane extends RootApi {
     }
 }
 
-const VERSION = new Semver('4.0.0-beta.1');
+const VERSION = new Semver('4.0.0-beta.2');
 
 export { BladeApi, ButtonApi, FolderApi, ListBladeApi, ListInputBindingApi, Pane, Semver, SeparatorBladeApi, SliderBladeApi, SliderInputBindingApi, TabApi, TabPageApi, TextBladeApi, TpChangeEvent, VERSION };
