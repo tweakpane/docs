@@ -126,23 +126,21 @@ class Emitter {
     constructor() {
         this.observers_ = {};
     }
-    on(eventName, handler, opt_options) {
-        var _a;
+    on(eventName, handler) {
         let observers = this.observers_[eventName];
         if (!observers) {
             observers = this.observers_[eventName] = [];
         }
         observers.push({
             handler: handler,
-            key: (_a = opt_options === null || opt_options === void 0 ? void 0 : opt_options.key) !== null && _a !== void 0 ? _a : handler,
         });
         return this;
     }
-    off(eventName, key) {
+    off(eventName, handler) {
         const observers = this.observers_[eventName];
         if (observers) {
             this.observers_[eventName] = observers.filter((observer) => {
-                return observer.key !== key;
+                return observer.handler !== handler;
             });
         }
         return this;
@@ -907,13 +905,7 @@ class BindingApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
-        }, {
-            key: handler,
         });
-        return this;
-    }
-    off(eventName, handler) {
-        this.emitter_.off(eventName, handler);
         return this;
     }
     refresh() {
@@ -1489,11 +1481,6 @@ class ButtonApi extends BladeApi {
         });
         return this;
     }
-    off(eventName, handler) {
-        const emitter = this.controller.buttonController.emitter;
-        emitter.off(eventName, handler);
-        return this;
-    }
 }
 
 function applyClass(elem, className, active) {
@@ -1715,13 +1702,7 @@ class RackApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
-        }, {
-            key: handler,
         });
-        return this;
-    }
-    off(eventName, handler) {
-        this.emitter_.off(eventName, handler);
         return this;
     }
     refresh() {
@@ -2224,13 +2205,7 @@ class FolderApi extends ContainerBladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
-        }, {
-            key: handler,
         });
-        return this;
-    }
-    off(eventName, handler) {
-        this.emitter_.off(eventName, handler);
         return this;
     }
 }
@@ -2585,13 +2560,7 @@ class TabApi extends ContainerBladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
-        }, {
-            key: handler,
         });
-        return this;
-    }
-    off(eventName, handler) {
-        this.emitter_.off(eventName, handler);
         return this;
     }
     onSelect_(ev) {
@@ -7406,13 +7375,7 @@ class ListBladeApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
-        }, {
-            key: handler,
         });
-        return this;
-    }
-    off(eventName, handler) {
-        this.emitter_.off(eventName, handler);
         return this;
     }
 }
@@ -7459,13 +7422,7 @@ class SliderBladeApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
-        }, {
-            key: handler,
         });
-        return this;
-    }
-    off(eventName, handler) {
-        this.emitter_.off(eventName, handler);
         return this;
     }
 }
@@ -7503,13 +7460,7 @@ class TextBladeApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
-        }, {
-            key: handler,
         });
-        return this;
-    }
-    off(eventName, handler) {
-        this.emitter_.off(eventName, handler);
         return this;
     }
 }
