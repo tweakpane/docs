@@ -1,4 +1,4 @@
-/*! Tweakpane 4.0.2 (c) 2016 cocopon, licensed under the MIT license. */
+/*! Tweakpane 4.0.3 (c) 2016 cocopon, licensed under the MIT license. */
 function forceCast(v) {
     return v;
 }
@@ -126,21 +126,23 @@ class Emitter {
     constructor() {
         this.observers_ = {};
     }
-    on(eventName, handler) {
+    on(eventName, handler, opt_options) {
+        var _a;
         let observers = this.observers_[eventName];
         if (!observers) {
             observers = this.observers_[eventName] = [];
         }
         observers.push({
             handler: handler,
+            key: (_a = opt_options === null || opt_options === void 0 ? void 0 : opt_options.key) !== null && _a !== void 0 ? _a : handler,
         });
         return this;
     }
-    off(eventName, handler) {
+    off(eventName, key) {
         const observers = this.observers_[eventName];
         if (observers) {
             this.observers_[eventName] = observers.filter((observer) => {
-                return observer.handler !== handler;
+                return observer.key !== key;
             });
         }
         return this;
@@ -878,6 +880,12 @@ class TpTabSelectEvent extends TpEvent {
         this.index = index;
     }
 }
+class TpMouseEvent extends TpEvent {
+    constructor(target, nativeEvent) {
+        super(target);
+        this.native = nativeEvent;
+    }
+}
 
 class BindingApi extends BladeApi {
     constructor(controller) {
@@ -905,7 +913,13 @@ class BindingApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
+        }, {
+            key: handler,
         });
+        return this;
+    }
+    off(eventName, handler) {
+        this.emitter_.off(eventName, handler);
         return this;
     }
     refresh() {
@@ -1476,9 +1490,14 @@ class ButtonApi extends BladeApi {
     on(eventName, handler) {
         const bh = handler.bind(this);
         const emitter = this.controller.buttonController.emitter;
-        emitter.on(eventName, () => {
-            bh(new TpEvent(this));
+        emitter.on(eventName, (ev) => {
+            bh(new TpMouseEvent(this, ev.nativeEvent));
         });
+        return this;
+    }
+    off(eventName, handler) {
+        const emitter = this.controller.buttonController.emitter;
+        emitter.off(eventName, handler);
         return this;
     }
 }
@@ -1545,8 +1564,9 @@ class ButtonController {
             title: this.props.get('title'),
         });
     }
-    onClick_() {
+    onClick_(ev) {
         this.emitter.emit('click', {
+            nativeEvent: ev,
             sender: this,
         });
     }
@@ -1596,7 +1616,7 @@ class Semver {
     }
 }
 
-const VERSION$1 = new Semver('2.0.2');
+const VERSION$1 = new Semver('2.0.3');
 
 function createPlugin(plugin) {
     return Object.assign({ core: VERSION$1 }, plugin);
@@ -1702,7 +1722,13 @@ class RackApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
+        }, {
+            key: handler,
         });
+        return this;
+    }
+    off(eventName, handler) {
+        this.emitter_.off(eventName, handler);
         return this;
     }
     refresh() {
@@ -2205,7 +2231,13 @@ class FolderApi extends ContainerBladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
+        }, {
+            key: handler,
         });
+        return this;
+    }
+    off(eventName, handler) {
+        this.emitter_.off(eventName, handler);
         return this;
     }
 }
@@ -2560,7 +2592,13 @@ class TabApi extends ContainerBladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
+        }, {
+            key: handler,
         });
+        return this;
+    }
+    off(eventName, handler) {
+        this.emitter_.off(eventName, handler);
         return this;
     }
     onSelect_(ev) {
@@ -3742,15 +3780,16 @@ class CheckboxView {
         const labelElem = doc.createElement('label');
         labelElem.classList.add(cn$e('l'));
         this.element.appendChild(labelElem);
+        this.labelElement = labelElem;
         const inputElem = doc.createElement('input');
         inputElem.classList.add(cn$e('i'));
         inputElem.type = 'checkbox';
-        labelElem.appendChild(inputElem);
+        this.labelElement.appendChild(inputElem);
         this.inputElement = inputElem;
         config.viewProps.bindDisabled(this.inputElement);
         const wrapperElem = doc.createElement('div');
         wrapperElem.classList.add(cn$e('w'));
-        labelElem.appendChild(wrapperElem);
+        this.labelElement.appendChild(wrapperElem);
         const markElem = createSvgIconElement(doc, 'check');
         wrapperElem.appendChild(markElem);
         config.value.emitter.on('change', this.onValueChange_);
@@ -3768,6 +3807,7 @@ class CheckboxView {
 class CheckboxController {
     constructor(doc, config) {
         this.onInputChange_ = this.onInputChange_.bind(this);
+        this.onLabelMouseDown_ = this.onLabelMouseDown_.bind(this);
         this.value = config.value;
         this.viewProps = config.viewProps;
         this.view = new CheckboxView(doc, {
@@ -3775,10 +3815,16 @@ class CheckboxController {
             viewProps: this.viewProps,
         });
         this.view.inputElement.addEventListener('change', this.onInputChange_);
+        this.view.labelElement.addEventListener('mousedown', this.onLabelMouseDown_);
     }
-    onInputChange_(e) {
-        const inputElem = forceCast(e.currentTarget);
+    onInputChange_(ev) {
+        const inputElem = forceCast(ev.currentTarget);
         this.value.rawValue = inputElem.checked;
+        ev.preventDefault();
+        ev.stopPropagation();
+    }
+    onLabelMouseDown_(ev) {
+        ev.preventDefault();
     }
 }
 
@@ -7375,7 +7421,13 @@ class ListBladeApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
+        }, {
+            key: handler,
         });
+        return this;
+    }
+    off(eventName, handler) {
+        this.emitter_.off(eventName, handler);
         return this;
     }
 }
@@ -7422,7 +7474,13 @@ class SliderBladeApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
+        }, {
+            key: handler,
         });
+        return this;
+    }
+    off(eventName, handler) {
+        this.emitter_.off(eventName, handler);
         return this;
     }
 }
@@ -7460,7 +7518,13 @@ class TextBladeApi extends BladeApi {
         const bh = handler.bind(this);
         this.emitter_.on(eventName, (ev) => {
             bh(ev);
+        }, {
+            key: handler,
         });
+        return this;
+    }
+    off(eventName, handler) {
+        this.emitter_.off(eventName, handler);
         return this;
     }
 }
@@ -7783,6 +7847,6 @@ class Pane extends RootApi {
     }
 }
 
-const VERSION = new Semver('4.0.2');
+const VERSION = new Semver('4.0.3');
 
 export { BladeApi, ButtonApi, FolderApi, ListBladeApi, ListInputBindingApi, Pane, Semver, SeparatorBladeApi, SliderBladeApi, SliderInputBindingApi, TabApi, TabPageApi, TextBladeApi, TpChangeEvent, VERSION };
